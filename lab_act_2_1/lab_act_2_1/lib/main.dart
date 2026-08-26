@@ -13,8 +13,8 @@ void main() {
             ])
           ),
           child: Center(
-            child: Text("Hello World"),
-            )
+            child: Image.asset('assets/dice-images/dice-2.png')
+            ),
             )
             )
     )
