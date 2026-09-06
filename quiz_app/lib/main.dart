@@ -1,53 +1,45 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter First App',
+      theme: ThemeData(useMaterial3: true),
       home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Welcome to Flutter'),
+        ),
         body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 73, 7, 189),
-                Color.fromARGB(255, 73, 6, 184),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/logo.png',
-                  width: 150,
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Text(
+                'Flutter - The Complete Guide',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-
-                const SizedBox(height: 55),
-
-                const Text(
-                  'Learn Flutter the fun way!',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-
-                const SizedBox(height: 35),
-
-                const Text(
-                  '→   Start Quiz',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Learn Flutter step-by-step, from the ground up.',
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
