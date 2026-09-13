@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
-class StyledText extends StatelessWidget {
-  const StyledText(this.text, {super.key});
+import 'package:basics/gradient_container.dart';
 
-  final String text;
-
-  @override
-  Widget build(context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 28,
+void main() {
+  runApp(
+    const MaterialApp(
+      home: Scaffold(
+        body: GradientContainer(
+          Color.fromARGB(255, 33, 5, 109),
+          Color.fromARGB(255, 68, 21, 149),
+        ),
       ),
-    );
-  }
+    ),
+  );
 }
