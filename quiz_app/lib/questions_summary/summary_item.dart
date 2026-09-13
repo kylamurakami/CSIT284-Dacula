@@ -14,41 +14,57 @@ class SummaryItem extends StatelessWidget {
         itemData['user_answer'] == itemData['correct_answer'];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 8,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           QuestionIdentifier(
             isCorrectAnswer: isCorrectAnswer,
-            questionIndex: itemData['question'] as int,
+            questionIndex: itemData['question_index'] as int,
           ),
-          const SizedBox(width: 20),
+
+          const SizedBox(width: 15),
+
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  itemData['question'] as String,
-                  style: GoogleFonts.lato(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+            child: Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF3E6D5),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    itemData['question'] as String,
+                    style: GoogleFonts.lato(
+                      color: const Color(0xFF800020),
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(itemData['user_answer'] as String,
+
+                  const SizedBox(height: 8),
+
+                  Text(
+                    'Your answer: ${itemData['user_answer']}',
                     style: const TextStyle(
-                      color: Color.fromARGB(255, 202, 171, 252),
-                    )),
-                Text(itemData['correct_answer'] as String,
+                      color: Color(0xFF800020),
+                      fontSize: 14,
+                    ),
+                  ),
+
+                  const SizedBox(height: 3),
+
+                  Text(
+                    'Correct answer: ${itemData['correct_answer']}',
                     style: const TextStyle(
-                      color: Color.fromARGB(255, 181, 254, 246),
-                    )),
-              ],
+                      color: Color(0xFF5C0017),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
