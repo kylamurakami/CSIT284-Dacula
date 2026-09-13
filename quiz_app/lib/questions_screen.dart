@@ -23,10 +23,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   void answerQuestion(String selectedAnswer) {
     widget.onSelectAnswer(selectedAnswer);
-    // currentQuestionIndex = currentQuestionIndex + 1;
-    // currentQuestionIndex += 1;
+
     setState(() {
-      currentQuestionIndex++; // increments the value by 1
+      currentQuestionIndex++;
     });
   }
 
@@ -36,22 +35,43 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
     return SizedBox(
       width: double.infinity,
-      child: Container(
-        margin: const EdgeInsets.all(40),
+      child: Padding(
+        padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              currentQuestion.text,
+              'Question ${currentQuestionIndex + 1} of ${questions.length}',
               style: GoogleFonts.lato(
-                color: const Color.fromARGB(255, 201, 153, 251),
-                fontSize: 24,
+                color: const Color(0xFF800020),
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
+
+            const SizedBox(height: 18),
+
+            Container(
+              padding: const EdgeInsets.all(22),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF3E6D5),
+                borderRadius: BorderRadius.circular(22),
+              ),
+              child: Text(
+                currentQuestion.text,
+                style: GoogleFonts.lato(
+                  color: const Color(0xFF800020),
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+
             const SizedBox(height: 30),
+
             ...currentQuestion.shuffledAnswers.map((answer) {
               return AnswerButton(
                 answerText: answer,
@@ -59,7 +79,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
                   answerQuestion(answer);
                 },
               );
-            })
+            }),
           ],
         ),
       ),
