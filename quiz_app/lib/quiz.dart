@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:adv_basics/start_screen.dart';
 import 'package:adv_basics/questions_screen.dart';
@@ -36,6 +37,7 @@ class _QuizState extends State<Quiz> {
 
   void restartQuiz() {
     setState(() {
+      _selectedAnswers = [];
       _activeScreen = 'questions-screen';
     });
   }
@@ -58,19 +60,29 @@ class _QuizState extends State<Quiz> {
     }
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: GoogleFonts.lato().fontFamily,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF800020),
+        ),
+      ),
       home: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(255, 78, 13, 151),
-                Color.fromARGB(255, 107, 15, 168),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        backgroundColor: const Color(0xFFFFF9F2),
+        body: SafeArea(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFFFF9F2),
+                  Color(0xFFF3E6D5),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
+            child: screenWidget,
           ),
-          child: screenWidget,
         ),
       ),
     );
