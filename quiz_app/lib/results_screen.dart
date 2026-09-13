@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:adv_basics/data/questions.dart';
 import 'package:adv_basics/questions_summary/questions_summary.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({
@@ -23,7 +23,7 @@ class ResultsScreen extends StatelessWidget {
           'question_index': i,
           'question': questions[i].text,
           'correct_answer': questions[i].answers[0],
-          'user_answer': chosenAnswers[i]
+          'user_answer': chosenAnswers[i],
         },
       );
     }
@@ -34,6 +34,7 @@ class ResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final numTotalQuestions = questions.length;
+
     final numCorrectQuestions = summaryData
         .where(
           (data) => data['user_answer'] == data['correct_answer'],
@@ -42,35 +43,64 @@ class ResultsScreen extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity,
-      child: Container(
-        margin: const EdgeInsets.all(40),
+      child: Padding(
+        padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Icon(
+              Icons.emoji_events_outlined,
+              size: 55,
+              color: Color(0xFF800020),
+            ),
+
+            const SizedBox(height: 15),
+
             Text(
-              'You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!',
+              'Quiz Complete!',
               style: GoogleFonts.lato(
-                color: const Color.fromARGB(255, 230, 200, 253),
-                fontSize: 20,
+                color: const Color(0xFF800020),
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              'You answered $numCorrectQuestions out of '
+              '$numTotalQuestions questions correctly!',
+              style: GoogleFonts.lato(
+                color: const Color(0xFF800020),
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(
-              height: 30,
-            ),
+
+            const SizedBox(height: 25),
+
             QuestionsSummary(summaryData),
-            const SizedBox(
-              height: 30,
-            ),
+
+            const SizedBox(height: 20),
+
             TextButton.icon(
               onPressed: onRestart,
               style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
+                foregroundColor: const Color(0xFF800020),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
               ),
               icon: const Icon(Icons.refresh),
-              label: const Text('Restart Quiz!'),
-            )
+              label: const Text(
+                'Restart Quiz',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),
