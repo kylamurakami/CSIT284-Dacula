@@ -72,15 +72,35 @@ class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     Widget mainContent = const Center(
-      child: Text(
-        'No expenses found.\nStart adding some!',
-        textAlign: TextAlign.center,
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Icon(
+        Icons.receipt_long_outlined,
+        size: 64,
+        color: Color(0xFF810B38),
+      ),
+      SizedBox(height: 12),
+      Text(
+        'No expenses yet',
         style: TextStyle(
-          fontSize: 16,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
           color: Color(0xFF541A1A),
         ),
       ),
-    );
+      SizedBox(height: 6),
+      Text(
+        'Start adding expenses to track your spending.',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 14,
+          color: Color(0xFF541A1A),
+        ),
+      ),
+    ],
+  ),
+);
 
     if (_registeredExpenses.isNotEmpty) {
       mainContent = ExpensesList(
