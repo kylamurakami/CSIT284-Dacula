@@ -209,12 +209,30 @@ class _ExpensesState extends State<Expenses> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Total Spending',
-                        style: TextStyle(
-                          color: Color(0xFFDCC3AA),
-                          fontSize: 13,
-                        ),
+                      const Row(
+                        children: [
+                          Text(
+                            'Total Spending',
+                            style: TextStyle(
+                              color: Color(0xFFDCC3AA),
+                              fontSize: 13,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(
+                            Icons.calendar_today_outlined,
+                            size: 13,
+                            color: Color(0xFFDCC3AA),
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            'This Month',
+                            style: TextStyle(
+                              color: Color(0xFFDCC3AA),
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 2),
                       Text(
