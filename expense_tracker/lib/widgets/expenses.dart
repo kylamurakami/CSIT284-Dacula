@@ -46,10 +46,13 @@ class _ExpensesState extends State<Expenses> {
 
   void _removeExpense(Expense expense) {
     final expenseIndex = _registeredExpenses.indexOf(expense);
+
     setState(() {
       _registeredExpenses.remove(expense);
     });
+
     ScaffoldMessenger.of(context).clearSnackBars();
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 3),
@@ -69,7 +72,14 @@ class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     Widget mainContent = const Center(
-      child: Text('No expenses found. Start adding some!'),
+      child: Text(
+        'No expenses found.\nStart adding some!',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 16,
+          color: Color(0xFF541A1A),
+        ),
+      ),
     );
 
     if (_registeredExpenses.isNotEmpty) {
@@ -81,11 +91,31 @@ class _ExpensesState extends State<Expenses> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter ExpenseTracker'),
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'My Expenses',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Track your spending',
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
         actions: [
-          IconButton(
-            onPressed: _openAddExpenseOverlay,
-            icon: const Icon(Icons.add),
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: IconButton.filled(
+              onPressed: _openAddExpenseOverlay,
+              icon: const Icon(Icons.add),
+              tooltip: 'Add expense',
+            ),
           ),
         ],
       ),
@@ -96,6 +126,13 @@ class _ExpensesState extends State<Expenses> {
             child: mainContent,
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _openAddExpenseOverlay,
+        backgroundColor: const Color(0xFF810B38),
+        foregroundColor: const Color(0xFFF1E2D1),
+        icon: const Icon(Icons.add),
+        label: const Text('Add Expense'),
       ),
     );
   }
