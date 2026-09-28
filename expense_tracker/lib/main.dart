@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:expense_tracker/widgets/expenses.dart';
 
@@ -30,6 +31,9 @@ void main() {
             foregroundColor: const Color(0xFF541A1A),
           ),
         ),
+        textTheme: GoogleFonts.poppinsTextTheme(
+          ThemeData.dark().textTheme,
+        ),
       ),
       theme: ThemeData().copyWith(
         colorScheme: kColorScheme,
@@ -51,7 +55,9 @@ void main() {
             foregroundColor: const Color(0xFFF1E2D1),
           ),
         ),
-        textTheme: ThemeData().textTheme.copyWith(
+        textTheme: GoogleFonts.poppinsTextTheme(
+          ThemeData().textTheme,
+        ).copyWith(
           titleLarge: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xFF541A1A),
