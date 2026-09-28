@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:expense_tracker/widgets/new_expense.dart';
-import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/chart/chart.dart';
+import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
+import 'package:expense_tracker/widgets/new_expense.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -84,9 +84,7 @@ class _ExpensesState extends State<Expenses> {
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.pop(ctx, false);
-            },
+            onPressed: () => Navigator.pop(ctx, false),
             child: const Text(
               'Cancel',
               style: TextStyle(
@@ -95,9 +93,7 @@ class _ExpensesState extends State<Expenses> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(ctx, true);
-            },
+            onPressed: () => Navigator.pop(ctx, true),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF810B38),
               foregroundColor: const Color(0xFFF1E2D1),
@@ -111,9 +107,7 @@ class _ExpensesState extends State<Expenses> {
       ),
     );
 
-    if (shouldDelete != true) {
-      return;
-    }
+    if (!mounted || shouldDelete != true) return;
 
     final expenseIndex = _registeredExpenses.indexOf(expense);
 
@@ -125,24 +119,19 @@ class _ExpensesState extends State<Expenses> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: const Duration(seconds: 3),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
-        backgroundColor: const Color(0xFF541A1A),
-        content: const Row(
+        content: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.delete_outline,
               color: Color(0xFFF1E2D1),
             ),
-            SizedBox(width: 10),
-            Text(
-              'Expense deleted.',
-              style: TextStyle(
-                color: Color(0xFFF1E2D1),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                '${expense.title} deleted',
+                style: const TextStyle(
+                  color: Color(0xFFF1E2D1),
+                ),
               ),
             ),
           ],
@@ -152,9 +141,18 @@ class _ExpensesState extends State<Expenses> {
           textColor: const Color(0xFFDCC3AA),
           onPressed: () {
             setState(() {
-              _registeredExpenses.insert(expenseIndex, expense);
+              _registeredExpenses.insert(
+                expenseIndex,
+                expense,
+              );
             });
           },
+        ),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        backgroundColor: const Color(0xFF541A1A),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
         ),
       ),
     );
@@ -167,38 +165,38 @@ class _ExpensesState extends State<Expenses> {
       (sum, expense) => sum + expense.amount,
     );
 
-    Widget mainContent = const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.receipt_long_outlined,
-            size: 64,
-            color: Color(0xFF810B38),
-          ),
-          SizedBox(height: 12),
-          Text(
-            'No expenses yet',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF541A1A),
-            ),
-          ),
-          SizedBox(height: 6),
-          Text(
-            'Start adding expenses to track your spending.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Color(0xFF541A1A),
-            ),
-          ),
-        ],
-      ),
-    );
+    Widget mainContent;
 
-    if (_registeredExpenses.isNotEmpty) {
+    if (_registeredExpenses.isEmpty) {
+      mainContent = Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.receipt_long_outlined,
+              size: 64,
+              color: Color(0xFF810B38),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'No expenses yet',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF541A1A),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Start adding expenses to track your spending.',
+              style: TextStyle(
+                color: Colors.brown.shade600,
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
       mainContent = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -258,111 +256,120 @@ class _ExpensesState extends State<Expenses> {
             child: IconButton.filled(
               onPressed: _openAddExpenseOverlay,
               icon: const Icon(Icons.add),
-              tooltip: 'Add expense',
             ),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xFF810B38),
-                  Color(0xFF541A1A),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFF810B38),
+                    Color(0xFF541A1A),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
               ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x22000000),
-                  blurRadius: 8,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF1E2D1),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(
-                    Icons.account_balance_wallet_outlined,
-                    size: 28,
-                    color: Color(0xFF810B38),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      const Row(
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF1E2D1)
+                              .withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.account_balance_wallet_outlined,
+                          color: Color(0xFFF1E2D1),
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Total Spending',
                             style: TextStyle(
-                              color: Color(0xFFDCC3AA),
-                              fontSize: 13,
+                              color: Color(0xFFF1E2D1),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 8),
-                          Icon(
-                            Icons.calendar_today_outlined,
-                            size: 13,
-                            color: Color(0xFFDCC3AA),
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            'This Month',
-                            style: TextStyle(
-                              color: Color(0xFFDCC3AA),
-                              fontSize: 11,
-                            ),
+                          SizedBox(height: 3),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_month_outlined,
+                                color: Color(0xFFDCC3AA),
+                                size: 14,
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                'This Month',
+                                style: TextStyle(
+                                  color: Color(0xFFDCC3AA),
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        '\$${totalSpending.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          color: Color(0xFFF1E2D1),
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${_registeredExpenses.length} expense${_registeredExpenses.length == 1 ? '' : 's'} recorded',
-                        style: const TextStyle(
-                          color: Color(0xFFDCC3AA),
-                          fontSize: 12,
-                        ),
-                      ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 18),
+                  Text(
+                    '\$${totalSpending.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      color: Color(0xFFF1E2D1),
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${_registeredExpenses.length} expenses recorded',
+                    style: const TextStyle(
+                      color: Color(0xFFDCC3AA),
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Chart(expenses: _registeredExpenses),
-          Expanded(
-            child: mainContent,
-          ),
-        ],
+            const SizedBox(height: 16),
+
+            // Fixed: Chart now receives the required expenses argument.
+            Chart(
+              expenses: _registeredExpenses,
+            ),
+
+            const SizedBox(height: 8),
+            Expanded(
+              child: mainContent,
+            ),
+          ],
+        ),
       ),
       floatingActionButton: TweenAnimationBuilder<double>(
+        tween: Tween(
+          begin: 0.8,
+          end: 1.0,
+        ),
         duration: const Duration(milliseconds: 300),
-        tween: Tween(begin: 0.8, end: 1.0),
         curve: Curves.easeOutBack,
         builder: (context, scale, child) {
           return Transform.scale(
