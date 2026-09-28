@@ -52,7 +52,69 @@ class _ExpensesState extends State<Expenses> {
     });
   }
 
-  void _removeExpense(Expense expense) {
+  Future<void> _removeExpense(Expense expense) async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFFF1E2D1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Row(
+          children: [
+            Icon(
+              Icons.delete_outline,
+              color: Color(0xFF810B38),
+            ),
+            SizedBox(width: 10),
+            Text(
+              'Delete Expense?',
+              style: TextStyle(
+                color: Color(0xFF541A1A),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          'Are you sure you want to delete "${expense.title}"?',
+          style: const TextStyle(
+            color: Color(0xFF541A1A),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx, false);
+            },
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: Color(0xFF541A1A),
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx, true);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF810B38),
+              foregroundColor: const Color(0xFFF1E2D1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldDelete != true) {
+      return;
+    }
+
     final expenseIndex = _registeredExpenses.indexOf(expense);
 
     setState(() {
