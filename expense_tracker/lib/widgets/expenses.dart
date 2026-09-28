@@ -162,6 +162,11 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final totalSpending = _registeredExpenses.fold<double>(
+      0,
+      (sum, expense) => sum + expense.amount,
+    );
+
     Widget mainContent = const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -194,16 +199,39 @@ class _ExpensesState extends State<Expenses> {
     );
 
     if (_registeredExpenses.isNotEmpty) {
-      mainContent = ExpensesList(
-        expenses: _registeredExpenses,
-        onRemoveExpense: _removeExpense,
+      mainContent = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 12, 16, 6),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.receipt_long_outlined,
+                  size: 20,
+                  color: Color(0xFF810B38),
+                ),
+                SizedBox(width: 8),
+                Text(
+                  'Recently Added',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF541A1A),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ExpensesList(
+              expenses: _registeredExpenses,
+              onRemoveExpense: _removeExpense,
+            ),
+          ),
+        ],
       );
     }
-
-    final totalSpending = _registeredExpenses.fold<double>(
-      0,
-      (sum, expense) => sum + expense.amount,
-    );
 
     return Scaffold(
       appBar: AppBar(
