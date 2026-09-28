@@ -127,12 +127,23 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _openAddExpenseOverlay,
-        backgroundColor: const Color(0xFF810B38),
-        foregroundColor: const Color(0xFFF1E2D1),
-        icon: const Icon(Icons.add),
-        label: const Text('Add Expense'),
+      floatingActionButton: TweenAnimationBuilder<double>(
+        duration: const Duration(milliseconds: 300),
+        tween: Tween(begin: 0.8, end: 1.0),
+        curve: Curves.easeOutBack,
+        builder: (context, scale, child) {
+          return Transform.scale(
+            scale: scale,
+            child: child,
+          );
+        },
+        child: FloatingActionButton.extended(
+          onPressed: _openAddExpenseOverlay,
+          backgroundColor: const Color(0xFF810B38),
+          foregroundColor: const Color(0xFFF1E2D1),
+          icon: const Icon(Icons.add),
+          label: const Text('Add Expense'),
+        ),
       ),
     );
   }
