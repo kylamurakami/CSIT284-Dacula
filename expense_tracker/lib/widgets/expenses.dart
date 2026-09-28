@@ -180,7 +180,14 @@ class _ExpensesState extends State<Expenses> {
             margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0xFF810B38),
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF810B38),
+                  Color(0xFF541A1A),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
               borderRadius: BorderRadius.circular(20),
               boxShadow: const [
                 BoxShadow(
