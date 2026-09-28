@@ -17,18 +17,23 @@ class ChartBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: FractionallySizedBox(
-          heightFactor: fill, // 0 <> 1
+          heightFactor: fill,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
               borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(8)),
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
               color: isDarkMode
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context)
                       .colorScheme
                       .primary
-                      .withValues(alpha: 0.65),
+                      .withValues(alpha: 0.75),
             ),
           ),
         ),
