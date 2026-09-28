@@ -74,15 +74,20 @@ class Chart extends StatelessWidget {
                   (bucket) => Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(
-                        categoryIcons[bucket.category],
-                        color: isDarkMode
-                            ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withValues(alpha: 0.7),
-                      ),
+                      child: Container(
+  padding: const EdgeInsets.all(6),
+  decoration: BoxDecoration(
+    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+    borderRadius: BorderRadius.circular(10),
+  ),
+  child: Icon(
+    categoryIcons[bucket.category],
+    color: isDarkMode
+        ? Theme.of(context).colorScheme.secondary
+        : Theme.of(context).colorScheme.primary,
+    size: 20,
+  ),
+),
                     ),
                   ),
                 )
