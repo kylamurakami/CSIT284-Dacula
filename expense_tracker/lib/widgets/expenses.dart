@@ -56,9 +56,30 @@ class _ExpensesState extends State<Expenses> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 3),
-        content: const Text('Expense deleted.'),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
+        backgroundColor: const Color(0xFF541A1A),
+        content: const Row(
+          children: [
+            Icon(
+              Icons.delete_outline,
+              color: Color(0xFFF1E2D1),
+            ),
+            SizedBox(width: 10),
+            Text(
+              'Expense deleted.',
+              style: TextStyle(
+                color: Color(0xFFF1E2D1),
+              ),
+            ),
+          ],
+        ),
         action: SnackBarAction(
-          label: 'Undo',
+          label: 'UNDO',
+          textColor: const Color(0xFFDCC3AA),
           onPressed: () {
             setState(() {
               _registeredExpenses.insert(expenseIndex, expense);
@@ -72,35 +93,35 @@ class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     Widget mainContent = const Center(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Icon(
-        Icons.receipt_long_outlined,
-        size: 64,
-        color: Color(0xFF810B38),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.receipt_long_outlined,
+            size: 64,
+            color: Color(0xFF810B38),
+          ),
+          SizedBox(height: 12),
+          Text(
+            'No expenses yet',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF541A1A),
+            ),
+          ),
+          SizedBox(height: 6),
+          Text(
+            'Start adding expenses to track your spending.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF541A1A),
+            ),
+          ),
+        ],
       ),
-      SizedBox(height: 12),
-      Text(
-        'No expenses yet',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF541A1A),
-        ),
-      ),
-      SizedBox(height: 6),
-      Text(
-        'Start adding expenses to track your spending.',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 14,
-          color: Color(0xFF541A1A),
-        ),
-      ),
-    ],
-  ),
-);
+    );
 
     if (_registeredExpenses.isNotEmpty) {
       mainContent = ExpensesList(
