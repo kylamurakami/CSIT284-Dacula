@@ -49,11 +49,24 @@ class _NewExpenseState extends State<NewExpense>
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
     final pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: firstDate,
-      lastDate: now,
+  context: context,
+  initialDate: now,
+  firstDate: firstDate,
+  lastDate: now,
+  builder: (context, child) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: Theme.of(context).colorScheme.copyWith(
+          primary: const Color(0xFF810B38),
+          onPrimary: const Color(0xFFF1E2D1),
+          surface: const Color(0xFFF1E2D1),
+          onSurface: const Color(0xFF541A1A),
+        ),
+      ),
+      child: child!,
     );
+  },
+);
     setState(() {
       _selectedDate = pickedDate;
     });
