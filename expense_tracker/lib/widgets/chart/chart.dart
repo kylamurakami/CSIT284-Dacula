@@ -43,21 +43,14 @@ class Chart extends StatelessWidget {
       width: double.infinity,
       height: 180,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context)
-                .colorScheme
-                .primary
-                .withValues(alpha: 0.3),
-            Theme.of(context)
-                .colorScheme
-                .primary
-                .withValues(alpha: 0.0),
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-        ),
+        borderRadius: BorderRadius.circular(16),
+        color: Theme.of(context).cardColor,
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 6,
+            offset: Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
         children: [
