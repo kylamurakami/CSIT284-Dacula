@@ -7,58 +7,87 @@ class ExpenseItem extends StatelessWidget {
 
   final Expense expense;
 
+  Color get categoryColor {
+    switch (expense.category) {
+      case Category.food:
+        return const Color(0xFF810B38);
+      case Category.travel:
+        return const Color(0xFF541A1A);
+      case Category.leisure:
+        return const Color(0xFFDCC3AA);
+      case Category.work:
+        return const Color(0xFF9A3158);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 16,
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: const Color(0xFF810B38),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                categoryIcons[expense.category],
-                color: const Color(0xFFF1E2D1),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
+            Row(
+              children: [
+                Container(
+                  width: 5,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: categoryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
                     expense.title,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    expense.formattedDate,
-                    style: TextStyle(
-                      color: const Color(0xFF541A1A).withValues(alpha: 0.7),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(width: 12),
-            Text(
-              '\$${expense.amount.toStringAsFixed(2)}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF541A1A),
-              ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Text(
+                  '\$${expense.amount.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: categoryColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        categoryIcons[expense.category],
+                        size: 18,
+                        color: categoryColor,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        expense.formattedDate,
+                        style: TextStyle(
+                          color: categoryColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
