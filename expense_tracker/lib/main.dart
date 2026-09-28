@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/widgets/expenses.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
-  seedColor: const Color.fromARGB(255, 96, 59, 181),
+  seedColor: const Color(0xFF810B38),
 );
 
 var kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
-  seedColor: const Color.fromARGB(255, 5, 99, 125),
+  seedColor: const Color(0xFF541A1A),
 );
 
 void main() {
@@ -16,8 +16,9 @@ void main() {
     MaterialApp(
       darkTheme: ThemeData.dark().copyWith(
         colorScheme: kDarkColorScheme,
+        scaffoldBackgroundColor: const Color(0xFF541A1A),
         cardTheme: const CardThemeData().copyWith(
-          color: kDarkColorScheme.secondaryContainer,
+          color: const Color(0xFFDCC3AA),
           margin: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 8,
@@ -25,19 +26,20 @@ void main() {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: kDarkColorScheme.primaryContainer,
-            foregroundColor: kDarkColorScheme.onPrimaryContainer,
+            backgroundColor: const Color(0xFFDCC3AA),
+            foregroundColor: const Color(0xFF541A1A),
           ),
         ),
       ),
       theme: ThemeData().copyWith(
         colorScheme: kColorScheme,
+        scaffoldBackgroundColor: const Color(0xFFF1E2D1),
         appBarTheme: const AppBarTheme().copyWith(
-          backgroundColor: kColorScheme.onPrimaryContainer,
-          foregroundColor: kColorScheme.primaryContainer,
+          backgroundColor: const Color(0xFF810B38),
+          foregroundColor: const Color(0xFFF1E2D1),
         ),
         cardTheme: const CardThemeData().copyWith(
-          color: kColorScheme.secondaryContainer,
+          color: const Color(0xFFDCC3AA),
           margin: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 8,
@@ -45,13 +47,14 @@ void main() {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: kColorScheme.primaryContainer,
+            backgroundColor: const Color(0xFF810B38),
+            foregroundColor: const Color(0xFFF1E2D1),
           ),
         ),
         textTheme: ThemeData().textTheme.copyWith(
-          titleLarge: TextStyle(
+          titleLarge: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: kColorScheme.onSecondaryContainer,
+            color: Color(0xFF541A1A),
             fontSize: 16,
           ),
         ),
