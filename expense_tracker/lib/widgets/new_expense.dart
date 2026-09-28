@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key, required this.onAddExpense});
+  const NewExpense({
+    super.key,
+    required this.onAddExpense,
+  });
 
   final void Function(Expense expense) onAddExpense;
 
@@ -17,6 +20,7 @@ class _NewExpenseState extends State<NewExpense>
     with SingleTickerProviderStateMixin {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+
   DateTime? _selectedDate;
   Category _selectedCategory = Category.leisure;
 
@@ -45,37 +49,48 @@ class _NewExpenseState extends State<NewExpense>
     _animationController.forward();
   }
 
-  void _presentDatePicker() async {
+  Future<void> _presentDatePicker() async {
     final now = DateTime.now();
-    final firstDate = DateTime(now.year - 1, now.month, now.day);
-    final pickedDate = await showDatePicker(
-  context: context,
-  initialDate: now,
-  firstDate: firstDate,
-  lastDate: now,
-  builder: (context, child) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        colorScheme: Theme.of(context).colorScheme.copyWith(
-          primary: const Color(0xFF810B38),
-          onPrimary: const Color(0xFFF1E2D1),
-          surface: const Color(0xFFF1E2D1),
-          onSurface: const Color(0xFF541A1A),
-        ),
-      ),
-      child: child!,
+    final firstDate = DateTime(
+      now.year - 1,
+      now.month,
+      now.day,
     );
-  },
-);
+
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: firstDate,
+      lastDate: now,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+              primary: const Color(0xFF810B38),
+              onPrimary: const Color(0xFFF1E2D1),
+              surface: const Color(0xFFF1E2D1),
+              onSurface: const Color(0xFF541A1A),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (!mounted || pickedDate == null) return;
+
     setState(() {
       _selectedDate = pickedDate;
     });
   }
 
   void _submitExpenseData() {
-    final enteredAmount = double.tryParse(_amountController.text);
+    final enteredAmount = double.tryParse(
+      _amountController.text,
+    );
 
-    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    final amountIsInvalid =
+        enteredAmount == null || enteredAmount <= 0;
 
     if (_titleController.text.trim().isEmpty ||
         amountIsInvalid ||
@@ -83,26 +98,46 @@ class _NewExpenseState extends State<NewExpense>
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Invalid input'),
+          backgroundColor: const Color(0xFFF1E2D1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            'Invalid Input',
+            style: TextStyle(
+              color: Color(0xFF541A1A),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: const Text(
-            'Please make sure a valid title, amount, date and category was entered.',
+            'Please make sure a valid title, amount, date and category were entered.',
+            style: TextStyle(
+              color: Color(0xFF541A1A),
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(ctx);
               },
-              child: const Text('Okay'),
+              child: const Text(
+                'Okay',
+                style: TextStyle(
+                  color: Color(0xFF810B38),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
       );
+
       return;
     }
 
     widget.onAddExpense(
       Expense(
-        title: _titleController.text,
+        title: _titleController.text.trim(),
         amount: enteredAmount,
         date: _selectedDate!,
         category: _selectedCategory,
@@ -114,9 +149,9 @@ class _NewExpenseState extends State<NewExpense>
 
   @override
   void dispose() {
-    _animationController.dispose();
     _titleController.dispose();
     _amountController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -124,188 +159,302 @@ class _NewExpenseState extends State<NewExpense>
   Widget build(BuildContext context) {
     return SlideTransition(
       position: _slideAnimation,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 45,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFDCC3AA),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            const Text(
-              'Add New Expense',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF541A1A),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            TextField(
-              controller: _titleController,
-              maxLength: 50,
-              decoration: InputDecoration(
-                labelText: 'Expense Title',
-                prefixIcon: const Icon(Icons.edit),
-                filled: true,
-                fillColor: const Color(0xFFF1E2D1),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            Row(
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            20,
+            12,
+            20,
+            MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: TextField(
-                    controller: _amountController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'Amount',
-                      prefixText: '\$ ',
-                      prefixIcon: const Icon(Icons.attach_money),
-                      filled: true,
-                      fillColor: const Color(0xFFF1E2D1),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide.none,
-                      ),
+                // Drag handle
+                Center(
+                  child: Container(
+                    width: 36,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDCC3AA),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
 
-                const SizedBox(width: 12),
+                const SizedBox(height: 22),
 
-                Expanded(
-                  child: InkWell(
-                    onTap: _presentDatePicker,
-                    borderRadius: BorderRadius.circular(14),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF1E2D1),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.calendar_month,
-                            color: Color(0xFF810B38),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              _selectedDate == null
-                                  ? 'Select date'
-                                  : formatter.format(_selectedDate!),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                // Title
+                const Text(
+                  'Add New Expense',
+                  style: TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF541A1A),
                   ),
                 ),
-              ],
-            ),
 
-            const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF1E2D1),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: DropdownButton(
-                value: _selectedCategory,
-                isExpanded: true,
-                underline: const SizedBox(),
-                items: Category.values
-                    .map(
-                      (category) => DropdownMenuItem(
-                        value: category,
-                        child: Row(
-                          children: [
-                            Icon(
-                              categoryIcons[category],
-                              color: const Color(0xFF810B38),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              category.name.toUpperCase(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  if (value == null) {
-                    return;
-                  }
-
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                },
-              ),
-            ),
-
-            const Spacer(),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(
+                // Expense Title
+                TextField(
+                  controller: _titleController,
+                  maxLength: 50,
+                  style: const TextStyle(
+                    color: Color(0xFF541A1A),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  cursorColor: const Color(0xFF810B38),
+                  decoration: InputDecoration(
+                    labelText: 'Expense Title',
+                    labelStyle: const TextStyle(
                       color: Color(0xFF541A1A),
                     ),
+                    floatingLabelStyle: const TextStyle(
+                      color: Color(0xFF810B38),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.edit_outlined,
+                      color: Color(0xFF810B38),
+                    ),
+                    counterStyle: const TextStyle(
+                      color: Color(0xFF541A1A),
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFF1E2D1),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFDCC3AA),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF810B38),
+                        width: 2,
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(width: 8),
-                ElevatedButton.icon(
-                  onPressed: _submitExpenseData,
-                  icon: const Icon(Icons.save),
-                  label: const Text('Save Expense'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF810B38),
-                    foregroundColor: const Color(0xFFF1E2D1),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 14,
+
+                const SizedBox(height: 4),
+
+                // Amount
+                TextField(
+                  controller: _amountController,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  style: const TextStyle(
+                    color: Color(0xFF541A1A),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  cursorColor: const Color(0xFF810B38),
+                  decoration: InputDecoration(
+                    labelText: 'Amount',
+                    labelStyle: const TextStyle(
+                      color: Color(0xFF541A1A),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    floatingLabelStyle: const TextStyle(
+                      color: Color(0xFF810B38),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.attach_money,
+                      color: Color(0xFF810B38),
+                    ),
+                    prefixText: '\$ ',
+                    prefixStyle: const TextStyle(
+                      color: Color(0xFF541A1A),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xFFF1E2D1),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFDCC3AA),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF810B38),
+                        width: 2,
+                      ),
                     ),
                   ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Date
+                InkWell(
+                  onTap: _presentDatePicker,
+                  borderRadius: BorderRadius.circular(14),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF1E2D1),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: const Color(0xFFDCC3AA),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.calendar_month_outlined,
+                          color: Color(0xFF810B38),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            _selectedDate == null
+                                ? 'Select Date'
+                                : formatter.format(_selectedDate!),
+                            style: const TextStyle(
+                              color: Color(0xFF541A1A),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const Icon(
+                          Icons.chevron_right,
+                          color: Color(0xFF541A1A),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Category
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF1E2D1),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: const Color(0xFFDCC3AA),
+                    ),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<Category>(
+                      value: _selectedCategory,
+                      isExpanded: true,
+                      dropdownColor: const Color(0xFFF1E2D1),
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Color(0xFF541A1A),
+                      ),
+                      style: const TextStyle(
+                        color: Color(0xFF541A1A),
+                        fontWeight: FontWeight.w500,
+                      ),
+                      items: Category.values.map(
+                        (category) {
+                          return DropdownMenuItem<Category>(
+                            value: category,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  categoryIcons[category],
+                                  color: const Color(0xFF810B38),
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  category.name.toUpperCase(),
+                                  style: const TextStyle(
+                                    color: Color(0xFF541A1A),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (value) {
+                        if (value == null) return;
+
+                        setState(() {
+                          _selectedCategory = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: const Color(0xFF541A1A),
+                          side: const BorderSide(
+                            color: Color(0xFFDCC3AA),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: _submitExpenseData,
+                        icon: const Icon(
+                          Icons.save_outlined,
+                        ),
+                        label: const Text(
+                          'Save Expense',
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF810B38),
+                          foregroundColor: const Color(0xFFF1E2D1),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
