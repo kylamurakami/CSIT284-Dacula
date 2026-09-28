@@ -31,12 +31,20 @@ class _ExpensesState extends State<Expenses> {
   ];
 
   void _openAddExpenseOverlay() {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
-    );
-  }
+  showModalBottomSheet(
+    isScrollControlled: true,
+    backgroundColor: const Color(0xFFF1E2D1),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(28),
+      ),
+    ),
+    context: context,
+    builder: (ctx) => NewExpense(
+      onAddExpense: _addExpense,
+    ),
+  );
+}
 
   void _addExpense(Expense expense) {
     setState(() {
