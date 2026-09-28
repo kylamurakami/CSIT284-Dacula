@@ -31,20 +31,20 @@ class _ExpensesState extends State<Expenses> {
   ];
 
   void _openAddExpenseOverlay() {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    backgroundColor: const Color(0xFFF1E2D1),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(28),
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: const Color(0xFFF1E2D1),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(28),
+        ),
       ),
-    ),
-    context: context,
-    builder: (ctx) => NewExpense(
-      onAddExpense: _addExpense,
-    ),
-  );
-}
+      context: context,
+      builder: (ctx) => NewExpense(
+        onAddExpense: _addExpense,
+      ),
+    );
+  }
 
   void _addExpense(Expense expense) {
     setState(() {
@@ -138,6 +138,11 @@ class _ExpensesState extends State<Expenses> {
       );
     }
 
+    final totalSpending = _registeredExpenses.fold<double>(
+      0,
+      (sum, expense) => sum + expense.amount,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Column(
@@ -200,24 +205,32 @@ class _ExpensesState extends State<Expenses> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Manage your expenses',
-                        style: TextStyle(
-                          color: Color(0xFFF1E2D1),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Keep track of where your money goes.',
+                      const Text(
+                        'Total Spending',
                         style: TextStyle(
                           color: Color(0xFFDCC3AA),
                           fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '\$${totalSpending.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          color: Color(0xFFF1E2D1),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${_registeredExpenses.length} expense${_registeredExpenses.length == 1 ? '' : 's'} recorded',
+                        style: const TextStyle(
+                          color: Color(0xFFDCC3AA),
+                          fontSize: 12,
                         ),
                       ),
                     ],
