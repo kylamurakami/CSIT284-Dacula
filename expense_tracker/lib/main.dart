@@ -13,6 +13,8 @@ var kDarkColorScheme = ColorScheme.fromSeed(
 );
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     MaterialApp(
       darkTheme: ThemeData.dark().copyWith(
@@ -65,7 +67,6 @@ void main() {
           ),
         ),
       ),
-      // themeMode: ThemeMode.system, // default
       home: const Expenses(),
     ),
   );
