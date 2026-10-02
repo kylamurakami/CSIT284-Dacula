@@ -107,7 +107,9 @@ class _ExpensesState extends State<Expenses> {
       ),
     );
 
-    if (!mounted || shouldDelete != true) return;
+    if (!mounted || shouldDelete != true) {
+      return;
+    }
 
     final expenseIndex = _registeredExpenses.indexOf(expense);
 
@@ -164,6 +166,9 @@ class _ExpensesState extends State<Expenses> {
       0,
       (sum, expense) => sum + expense.amount,
     );
+
+    // Get the available screen width.
+    final width = MediaQuery.of(context).size.width;
 
     Widget mainContent;
 
@@ -286,8 +291,9 @@ class _ExpensesState extends State<Expenses> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF1E2D1)
-                              .withValues(alpha: 0.15),
+                          color: const Color(0xFFF1E2D1).withValues(
+                            alpha: 0.15,
+                          ),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(
@@ -350,16 +356,37 @@ class _ExpensesState extends State<Expenses> {
                 ],
               ),
             ),
+
             const SizedBox(height: 16),
 
-            // Fixed: Chart now receives the required expenses argument.
-            Chart(
-              expenses: _registeredExpenses,
-            ),
-
-            const SizedBox(height: 8),
+            // Responsive UI based on available screen width.
             Expanded(
-              child: mainContent,
+              child: width < 600
+                  ? Column(
+                      children: [
+                        Chart(
+                          expenses: _registeredExpenses,
+                        ),
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: mainContent,
+                        ),
+                      ],
+                    )
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Chart(
+                            expenses: _registeredExpenses,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: mainContent,
+                        ),
+                      ],
+                    ),
             ),
           ],
         ),
