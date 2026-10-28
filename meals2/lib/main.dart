@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:meals2/screens/tabs.dart';
 
@@ -14,8 +15,20 @@ final kDarkColorScheme = ColorScheme.fromSeed(
 
 void main() {
   runApp(
-    MaterialApp(
-      theme: ThemeData(
+    const ProviderScope(
+      child: MealsApp(),
+    ),
+  );
+}
+
+class MealsApp extends StatelessWidget {
+  const MealsApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Meals App',
+      theme: ThemeData().copyWith(
         colorScheme: kColorScheme,
         scaffoldBackgroundColor: kColorScheme.surface,
         appBarTheme: AppBarTheme(
@@ -25,16 +38,11 @@ void main() {
         cardTheme: CardThemeData(
           color: kColorScheme.secondaryContainer,
           margin: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
+            horizontal: 8,
+            vertical: 4,
           ),
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: kColorScheme.primaryContainer,
-          ),
-        ),
-        textTheme: ThemeData.light().textTheme.copyWith(
+        textTheme: ThemeData().textTheme.copyWith(
               titleLarge: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -45,27 +53,9 @@ void main() {
       darkTheme: ThemeData.dark().copyWith(
         colorScheme: kDarkColorScheme,
         scaffoldBackgroundColor: kDarkColorScheme.surface,
-        appBarTheme: AppBarTheme(
-          backgroundColor: kDarkColorScheme.surface,
-          foregroundColor: kDarkColorScheme.onSurface,
-        ),
-        cardTheme: CardThemeData(
-          color: kDarkColorScheme.secondaryContainer,
-          margin: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-        ),
-        textTheme: ThemeData.dark().textTheme.copyWith(
-              titleLarge: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: kDarkColorScheme.onSurface,
-              ),
-            ),
       ),
       themeMode: ThemeMode.system,
       home: const TabsScreen(),
-    ),
-  );
+    );
+  }
 }
