@@ -7,11 +7,11 @@ import 'package:campus_hub/screens/tabs.dart';
 
 const Color canvas = Color(0xFFF4F7FA);
 const Color accentLight = Color(0xFFB8D8D8);
-const Color accent = Color(0xFF2C7A7B);
-const Color primary = Color(0xFF16324F);
-const Color secondary = Color(0xFF4F6D7A);
+const Color accent = Color.fromARGB(255, 236, 236, 187);
+const Color primary = Color.fromARGB(255, 141, 25, 41);
+const Color secondary = Color.fromARGB(255, 223, 216, 186);
 const Color border = Color(0xFFDCE8F0);
-const Color textColor = Color(0xFF1F2933);
+const Color textColor = Color.fromARGB(255, 85, 5, 5);
 
 final theme = ThemeData(
   useMaterial3: true,
