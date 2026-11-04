@@ -6,7 +6,7 @@ import 'package:campus_hub/providers/favorites_provider.dart';
 import 'package:campus_hub/screens/tabs.dart';
 
 const Color canvas = Color(0xFFF4F7FA);
-const Color accentLight = Color(0xFFB8D8D8);
+const Color accentLight = Color(0xFFF4F7FA);
 const Color accent = Color.fromARGB(255, 236, 236, 187);
 const Color primary = Color.fromARGB(255, 141, 25, 41);
 const Color secondary = Color.fromARGB(255, 223, 216, 186);
@@ -21,7 +21,7 @@ final theme = ThemeData(
     seedColor: primary,
     brightness: Brightness.light,
     primary: primary,
-    secondary: accent,
+    secondary: canvas,
     surface: canvas,
     onSurface: textColor,
   ),

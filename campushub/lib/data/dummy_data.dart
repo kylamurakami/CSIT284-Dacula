@@ -7,32 +7,32 @@ const availableCategories = [
   ActivityCategory(
     id: 'c1',
     title: 'Technology',
-    color: Colors.blue,
+    color: Color.fromARGB(255, 33, 80, 119),
   ),
   ActivityCategory(
     id: 'c2',
     title: 'Research',
-    color: Colors.purple,
+    color: Color.fromARGB(255, 40, 4, 46),
   ),
   ActivityCategory(
     id: 'c3',
     title: 'Competition',
-    color: Colors.red,
+    color: Color.fromARGB(255, 53, 6, 12),
   ),
   ActivityCategory(
     id: 'c4',
     title: 'Career',
-    color: Colors.orange,
+    color: Color.fromARGB(255, 1, 8, 39),
   ),
   ActivityCategory(
     id: 'c5',
     title: 'Leadership',
-    color: Colors.green,
+    color: Color.fromARGB(255, 36, 48, 4),
   ),
   ActivityCategory(
     id: 'c6',
     title: 'Community Service',
-    color: Colors.teal,
+    color: Color.fromARGB(255, 102, 1, 43),
   ),
 ];
 
