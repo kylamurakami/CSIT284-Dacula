@@ -90,19 +90,21 @@ class _GroceryListState extends State<GroceryList> {
     }
   }
 
-  Future<void> _addItem() async {
-  final newItem = await Navigator.of(context).push<GroceryItem>(
-    MaterialPageRoute(
-      builder: (ctx) => const NewItem(),
-    ),
-  );
+  void _addItem() async {
+    final newItem = await Navigator.of(context).push<GroceryItem>(
+      MaterialPageRoute(
+        builder: (ctx) => const NewItem(),
+      ),
+    );
 
-  if (newItem == null || !mounted) {
-    return;
+    if (newItem == null) {
+      return;
+    }
+
+    setState(() {
+      _groceryItems.add(newItem);
+    });
   }
-
-  await _loadItems();
-}
 
   @override
   Widget build(BuildContext context) {
